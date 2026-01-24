@@ -1,5 +1,6 @@
 import 'package:adhan/adhan.dart';
 import 'package:flutter/material.dart';
+import 'package:salah_times/widgets/modern_prayer_card.dart';
 
 void main() {
   final kocaeliCoordinates = Coordinates(40.7625, 29.9175);
@@ -16,28 +17,10 @@ class MainApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      theme: ThemeData.dark(),
       home: Scaffold(
-        body: Center(child: PrayerTimesWidget(prayerTimes: prayerTimes)),
+        body: Center(child: ModernPrayerCard(prayerTimes: prayerTimes)),
       ),
-    );
-  }
-}
-
-class PrayerTimesWidget extends StatelessWidget {
-  final PrayerTimes prayerTimes;
-  const PrayerTimesWidget({super.key, required this.prayerTimes});
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Text("Prayer Times"),
-        Text("Fajr Prayer: ${prayerTimes.fajr}"),
-        Text("Duhr Prayer: ${prayerTimes.dhuhr}"),
-        Text("Asr Prayer: ${prayerTimes.asr}"),
-        Text("Maghrib Prayer: ${prayerTimes.maghrib}"),
-        Text("Isha Prayer: ${prayerTimes.isha}"),
-      ],
     );
   }
 }
