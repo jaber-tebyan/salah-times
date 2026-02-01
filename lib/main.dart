@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:adhan/adhan.dart';
 import 'package:flutter/material.dart';
 import 'package:salah_times/db_helper.dart';
+import 'package:salah_times/helper_widgets/debug_list_view.dart';
 import 'package:salah_times/widgets/modern_prayer_card.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 
@@ -29,8 +30,12 @@ void main() async {
   final params = CalculationMethod.muslim_world_league.getParameters();
   params.madhab = Madhab.shafi;
   final prayerTimes = PrayerTimes.today(kocaeliCoordinates, params);
-  runApp(MainApp(prayerTimes: prayerTimes));
+  // runApp(MainApp(prayerTimes: prayerTimes));
+  var stringListDisplay = StringListDisplay(db: db);
+  runApp(MaterialApp(home: Scaffold(body: stringListDisplay)));
 }
+
+void showPrayerTimesToast(String countryName) {}
 
 class MainApp extends StatelessWidget {
   final PrayerTimes prayerTimes;

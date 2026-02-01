@@ -4,7 +4,7 @@ import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 
 class CitiesDatabase {
-  static Database? database;
+  Database? database;
 
   Future<void> init() async {
     var dbDir = await getDatabasesPath();
@@ -18,6 +18,47 @@ class CitiesDatabase {
     );
     await File(dbPath).writeAsBytes(buffer);
     database = await openDatabase(dbPath);
+  }
+
+  Future<List<String>?> getCities([String? country]) async {
+    final db = database;
+    if (db == null) {
+      throw StateError("Database not initialized");
+    }
+    final List<Map<String, Object?>> cities;
+    if (country == null) {
+      cities = await db.query('cities', columns: ['city'], distinct: true);
+    } else {
+      cities = await db.query(
+        'cities',
+        columns: ['city'],
+        where: 'country = ? COLLATE NOCASE',
+        whereArgs: [country],
+        distinct: true,
+      );
+    }
+    List<String> result = List.generate(
+      cities.length,
+      (i) => cities[i]['city'] as String,
+    );
+    return result;
+  }
+
+  Future<List<String>?> getCountries() async {
+    final db = database;
+    if (db == null) {
+      throw StateError("Database not initialized");
+    }
+    final countries = await db.query(
+      'cities',
+      columns: ['country'],
+      distinct: true,
+    );
+    List<String> result = List.generate(
+      countries.length,
+      (i) => countries[i]['country'] as String,
+    );
+    return result;
   }
 
   Future<Coordinate?> getCoordinate({
